@@ -1,5 +1,6 @@
+server:
+  port: 8083
 spring:
   application:
     name: likelion-websocket
-server:
-  port: 8083
+
