@@ -34,16 +34,16 @@ public class ChatMessage {
         return welcomeMessage;
     }
 
-//    public static ChatMessage createLeavingMessage(String sender) {
-//        ChatMessage leavingMessage = ChatMessage.builder()
-//                .sender("System")
-//                .content(
-//                        String.format("""
-//                        %s 님이 퇴장했습니다.
-//                        """, sender))
-//                .type(ChatMessage.MessageType.LEAVE)
-//                .build();
-//
-//        return leavingMessage;
-//    }
+    public static ChatMessage createLeavingMessage(String sender) {
+        ChatMessage leavingMessage = ChatMessage.builder()
+                .sender("System")
+                .content(
+                        String.format("""
+                        %s 님이 퇴장했습니다.
+                        """, sender))
+                .type(ChatMessage.MessageType.LEAVE)
+                .build();
+
+        return leavingMessage;
+    }
 }

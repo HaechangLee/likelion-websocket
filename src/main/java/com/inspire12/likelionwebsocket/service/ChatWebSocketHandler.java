@@ -2,6 +2,7 @@ package com.inspire12.likelionwebsocket.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.inspire12.likelionwebsocket.holder.WebSocketSessionHolder;
 import com.inspire12.likelionwebsocket.model.ChatMessage;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +15,16 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.security.Principal;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 @Component
 public class ChatWebSocketHandler extends TextWebSocketHandler {
-    // 연결된 모든 세션을 저장할 스레드 안전한 Set
-    @Getter
-    private final Set<WebSocketSession> sessions = new CopyOnWriteArraySet<>(); //세션 저장용 자료구조 (CopyOnWriteArraySet
+
+//    @Getter
+//    private WebSocketSessionHolder webSocketSessionHolder;
     private final ObjectMapper objectMapper; // ??? objmapper 란?
 
     public ChatWebSocketHandler(ObjectMapper objectMapper) {
@@ -30,7 +33,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        sessions.add(session); //ws 연결 되면 세션을 set에 저장
+        WebSocketSessionHolder.addSession(session);
     }
 
     @Override
@@ -43,12 +46,12 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             messageToSend = new TextMessage(objectMapper.writeValueAsBytes(welcomeMessage));
         }
 
-//        else if (chatMessage.getType() == ChatMessage.MessageType.LEAVE) {
-//            ChatMessage leavingMessage = ChatMessage.createLeavingMessage(chatMessage.getSender());
-//            messageToSend = new TextMessage(objectMapper.writeValueAsBytes(leavingMessage));
-//        }
+        else if (chatMessage.getType() == ChatMessage.MessageType.LEAVE) {
+            ChatMessage leavingMessage = ChatMessage.createLeavingMessage(chatMessage.getSender());
+            messageToSend = new TextMessage(objectMapper.writeValueAsBytes(leavingMessage));
+        }
 
-        for (WebSocketSession webSocketSession : sessions) { //set내의 모든 세션들에 메시지 전송
+        for (WebSocketSession webSocketSession : WebSocketSessionHolder.getSessions()) { //set내의 모든 세션들에 메시지 전송
             if (webSocketSession.isOpen()) {
                 webSocketSession.sendMessage(messageToSend);
             }
@@ -57,7 +60,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        sessions.remove(session); // ws 연결 종료 시 set에서 삭제
+        WebSocketSessionHolder.removeSession(session); // ws 연결 종료 시 set에서 삭제
     }
+
 }
 

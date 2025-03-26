@@ -1,6 +1,7 @@
 package com.inspire12.likelionwebsocket.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.inspire12.likelionwebsocket.holder.WebSocketSessionHolder;
 import com.inspire12.likelionwebsocket.model.ChatMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
@@ -23,7 +24,7 @@ public class MessageService {
         // 메시지 주고받는 로직
         try {
             TextMessage messageToSend = new TextMessage(objectMapper.writeValueAsBytes(chatMessage));
-            Set<WebSocketSession> sessions = chatWebSocketHandler.getSessions();
+            Set<WebSocketSession> sessions = WebSocketSessionHolder.getSessions();
             for (WebSocketSession session : sessions) {
                 session.sendMessage(messageToSend);
             }
