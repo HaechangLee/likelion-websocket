@@ -17,10 +17,10 @@ public class MessageService {
     public MessageService(ChatWebSocketHandler chatWebSocketHandler, ObjectMapper objectMapper) {
         this.chatWebSocketHandler = chatWebSocketHandler;
         this.objectMapper = objectMapper;
-    }
+    } // messageService는 websocket 최초 연결 시에 생성됨. => ChatWebSocketHandler와 WebSocketConfig에서 담당
 
     public ChatMessage sendMessage(ChatMessage chatMessage) {
-
+        // 메시지 주고받는 로직
         try {
             TextMessage messageToSend = new TextMessage(objectMapper.writeValueAsBytes(chatMessage));
             Set<WebSocketSession> sessions = chatWebSocketHandler.getSessions();

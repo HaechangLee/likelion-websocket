@@ -29,10 +29,10 @@ public class ChatController {
 
     public ChatController(MessageService messageService) {
         this.messageService = messageService;
-    } //생성자. websocket 연결 시에 유지하고 있는 websocketconfig와 objmapper를 받아옴.
+    } // 컨트롤러 동작 시 MessageService를 받아옴 (Session set, objectmapper)
 
     @PostMapping("/call")
-    public ChatMessage call(@RequestBody ChatMessage chatMessage) throws IOException {
-        return messageService.sendMessage(chatMessage);
+    public ChatMessage call(@RequestBody ChatMessage chatMessage) throws IOException { // call을 통한 post 요청 처리
+        return messageService.sendMessage(chatMessage); //message service에서 세부로직 처리
     }
 }
