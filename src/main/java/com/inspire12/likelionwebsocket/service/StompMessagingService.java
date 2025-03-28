@@ -21,7 +21,14 @@ public class StompMessagingService {
         simpMessagingTemplate.convertAndSendToUser(username,"/queue/private", chatMessage);
     }
 
-//    public ChatMessage createWelcomeMessage(ChatMessage chatMessage) {
-//        return ChatMessage
-//    }
+    public ChatMessage createWelcomeMessage(ChatMessage chatMessage) {
+        return ChatMessage.builder()
+                .sender("System")
+                .content(
+                        String.format("""
+                                %s 님이 들어왔습니다.
+                                """, chatMessage.getSender()))
+                .type(ChatMessage.MessageType.JOIN)
+                .build();
+    }
 }
