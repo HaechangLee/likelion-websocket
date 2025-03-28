@@ -12,7 +12,21 @@ import java.util.Map;
 import java.util.UUID;
 
 @Component
-public class CustomHandshakeHandler {
+public class CustomHandshakeHandler extends DefaultHandshakeHandler{
+    @Override
+    protected Principal determineUser(ServerHttpRequest request,
+                                      WebSocketHandler wsHandler,
+                                      Map<String, Object> attributes) {
+        // 예시: UUID 기반 임시 Principal 생성 (익명일 경우)
+        String token = getTokenFromRequest(request);
+
+        if (token != null && validateToken(token)) {
+            String username = extractUsernameFromToken(token);
+            return () -> username;
+        }
+
+        return null;
+    }
 
     private String getTokenFromRequest(ServerHttpRequest request) {
         // URL 파라미터에서 토큰 추출
