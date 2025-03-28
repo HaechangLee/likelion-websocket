@@ -45,12 +45,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         config.enableSimpleBroker("/topic");
         config.setApplicationDestinationPrefixes("/app");
         config.setUserDestinationPrefix("/user");
+
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
                 .setAllowedOriginPatterns("*")
+                .setHandshakeHandler(customHandshakeHandler)
                 .withSockJS();
         // WebSocket 연결 엔드포인트 등록, SockJS fallback 제공
 
