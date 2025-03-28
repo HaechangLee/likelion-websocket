@@ -25,7 +25,7 @@ public class MessageService {
     }
 
     public ChatMessage sendMessage(ChatMessage chatMessage) {
-//        simpMessagingTemplate.convertAndSend("/topic/public", chatMessage);
+        simpMessagingTemplate.convertAndSend("/topic/public", chatMessage);
 //        simpMessagingTemplate.convertAndSend("/topic/public", sendMessageWithAI(chatMessage));
         return chatMessage;
     }
