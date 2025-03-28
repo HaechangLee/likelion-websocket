@@ -27,6 +27,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // /app을 통해 들어오는 메시지는 별도의 로직을 거쳐 구독자들에게 발송됨
         // Controller를 통해 handling 가능
         config.setApplicationDestinationPrefixes("/app");
+        config.setUserDestinationPrefix("/user");
     }
 
     @Override
