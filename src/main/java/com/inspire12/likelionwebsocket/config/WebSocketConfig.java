@@ -42,11 +42,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         // 클라이언트가 구독할 prefix 설정 (예: /topic)
-
+        config.enableSimpleBroker("/topic","/queue");
+        config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/ws")
+                .setAllowedOriginPatterns("*")
+                .withSockJS();
         // WebSocket 연결 엔드포인트 등록, SockJS fallback 제공
 
     }
