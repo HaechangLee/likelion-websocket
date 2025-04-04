@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Component
-public class CustomHandshakeHandler extends DefaultHandshakeHandler{
+public class CustomHandshakeHandler extends DefaultHandshakeHandler {
     @Override
     protected Principal determineUser(ServerHttpRequest request,
                                       WebSocketHandler wsHandler,
